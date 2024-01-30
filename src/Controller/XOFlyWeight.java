@@ -5,6 +5,7 @@
 package Controller;
 
 import Model.CellState;
+import Model.StateFactory;
 import java.util.HashMap;
 
 /**
@@ -12,7 +13,17 @@ import java.util.HashMap;
  * @author es-ahmedalizakaryah2
  */
 public class XOFlyWeight {
-    
-    private static HashMap <String, CellState> hm = new HashMap<String, CellState>();
-    
+
+    private static HashMap<Character, CellState> hm;
+
+    public XOFlyWeight() {
+        hm = new HashMap<Character, CellState>();
+    }
+
+    public CellState getState(char State) {
+        if (!hm.containsKey(State)) {
+            hm.put(State, StateFactory.getState(State));
+        }
+        return hm.get(State);
+    }
 }

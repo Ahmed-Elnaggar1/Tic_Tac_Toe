@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/Java_Projects/Tic_Tac_Toe/src/Model/BoardSingleton.java</file>
             <file>file:/D:/Java_Projects/Tic_Tac_Toe/src/View/LevelScreen.java</file>
             <file>file:/D:/Java_Projects/Tic_Tac_Toe/src/Controller/XOFlyWeight.java</file>
+            <file>file:/D:/Java_Projects/Tic_Tac_Toe/src/Controller/XOLogic.java</file>
             <file>file:/D:/Java_Projects/Tic_Tac_Toe/src/Utils/background.png</file>
             <file>file:/D:/Java_Projects/Tic_Tac_Toe/src/View/test.java</file>
             <file>file:/D:/Java_Projects/Tic_Tac_Toe/src/Utils/o.png</file>
+            <file>file:/D:/Java_Projects/Tic_Tac_Toe/src/Model/StateFactory.java</file>
             <file>file:/D:/Java_Projects/Tic_Tac_Toe/src/Controller/XOControl.java</file>
             <file>file:/D:/Java_Projects/Tic_Tac_Toe/src/Model/Cell.java</file>
             <file>file:/D:/Java_Projects/Tic_Tac_Toe/src/Model/XState.java</file>
