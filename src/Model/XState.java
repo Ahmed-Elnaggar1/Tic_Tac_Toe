@@ -4,7 +4,6 @@
  */
 package Model;
 
-
 /**
  *
  * @author es-ahmedalizakaryah2
@@ -20,5 +19,16 @@ public class XState implements CellState {
     public void displayState() {
         System.out.println("X STATE");
     }
-    
+
+    @Override
+
+    public boolean notEquals(CellState state) {
+        return getClass() != state.getClass();
+    }
+
+    @Override
+    public String tostring() {
+        return "X";
+    }
+
 }

@@ -1,7 +1,12 @@
 package Controller;
 
+import ArtificialIntelligence.Random;
+import Model.Board;
+import Model.BoardBuilder;
 import Model.BoardSingleton;
 import Model.CellState;
+import Model.IBoard;
+import Model.IBoardBuilder;
 import Model.OState;
 import Model.XState;
 import javax.swing.*;
@@ -24,7 +29,34 @@ public class XOControl extends JPanel {
 
     private int[][] boardState = Board.getBoard(); // 3x3 board; // Representing the state of each cell: 0 for empty, 1 for X, 2 for O
 
-    XOLogic logic = new XOLogic();
+    XOLogic logic = XOLogic.getInstance();
+    private boolean AlphaMax = false;
+    private boolean MiniMax = false;
+    private boolean random = false;
+
+    public boolean isAlphaMax() {
+        return AlphaMax;
+    }
+
+    public void setAlphaMax(boolean AlphaMax) {
+        this.AlphaMax = AlphaMax;
+    }
+
+    public boolean isMiniMax() {
+        return MiniMax;
+    }
+
+    public void setMiniMax(boolean MiniMax) {
+        this.MiniMax = MiniMax;
+    }
+
+    public boolean isRandom() {
+        return random;
+    }
+
+    public void setRandom(boolean random) {
+        this.random = random;
+    }
 
     public XOControl() {
         // Load images (board, X, O)
@@ -32,6 +64,7 @@ public class XOControl extends JPanel {
         // Load the images using ImageIO.read() method
 
         // For demonstration purpose, I'll initialize them to null
+        logic.initializeBoard();
         try {
             File file = new File("src/Utils/background.png");
             File file2 = new File("src/Utils/x.png");
@@ -45,8 +78,6 @@ public class XOControl extends JPanel {
         }
 
         // Initialize the board state
-        
-
         // Add mouse listener
         addMouseListener(new MouseAdapter() {
             @Override
@@ -60,13 +91,14 @@ public class XOControl extends JPanel {
                 int cellHeight = getHeight() / 3;
                 int row = mouseY / cellHeight;
                 int col = mouseX / cellWidth;
-
-                if (logic.move(row, col)) {
-                   
-                    repaint();
+                if (!check()) {
+                    logic.move(row, col);
                 }
+
+                repaint();
             }
         });
+
     }
 
     @Override
@@ -93,6 +125,35 @@ public class XOControl extends JPanel {
         }
     }
 
+    public boolean check() {
+        int row, col;
+        if (random && logic.getPlayerTurn() instanceof OState) {
+            int index = Random.run() % XOLogic.BOARD_WIDTH;
+            row = index % XOLogic.BOARD_WIDTH;
+            col = index / XOLogic.BOARD_WIDTH;
+            logic.move(row, col);
+            repaint();
+            return true;
+        } else if (MiniMax && logic.getPlayerTurn() instanceof OState) {
+            int index = Random.run() % XOLogic.BOARD_WIDTH;
+            row = index % XOLogic.BOARD_WIDTH;
+            col = index / XOLogic.BOARD_WIDTH;
+            logic.move(row, col);
+            repaint();
+            return true;
+
+        } else if (AlphaMax && logic.getPlayerTurn() instanceof OState) {
+            int index = Random.run() % XOLogic.BOARD_WIDTH;
+            row = index % XOLogic.BOARD_WIDTH;
+            col = index / XOLogic.BOARD_WIDTH;
+            logic.move(row, col);
+            repaint();
+            return true;
+
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Tic Tac Toe");
@@ -102,5 +163,13 @@ public class XOControl extends JPanel {
             frame.setLocationRelativeTo(null); // Center the frame on the screen
             frame.setVisible(true);
         });
+      /*  CellState O = new OState();
+        CellState O2 = new OState();
+        CellState X = new XState();
+        CellState X2 = new XState();
+        System.out.println(O.equals(O2));
+        System.out.println(O.equals(X));
+        System.out.println(X.equals(O));
+        System.out.println(X.equals(X2));*/
     }
 }

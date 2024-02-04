@@ -7,7 +7,9 @@ package Controller;
 import Model.BoardSingleton;
 import Model.CellState;
 import Model.OState;
+import Model.XOFlyWeight;
 import Model.XState;
+import java.util.HashSet;
 
 /**
  *
@@ -24,7 +26,28 @@ public class XOLogic {
     private CellState PlayerTurn = new XState();
     private XOFlyWeight State = new XOFlyWeight();
     int moveCount = 0;
+    public static HashSet<Integer> movesAvailable=new HashSet<>();
 
+    public int getMoveCount() {
+        return moveCount;
+    }
+
+    public CellState getWinner() {
+        return winner;
+    }
+    private static XOLogic logic = null;
+    private XOLogic()
+    {
+        
+    }
+    public static XOLogic getInstance()
+    {
+        if(logic == null)
+        {
+            logic = new XOLogic();
+        }
+        return logic;
+    }
     public boolean move(int x, int y) {
         if (this.gameOver) {
             throw new IllegalStateException("TicTacToe is over. No moves can be played.");
@@ -39,15 +62,16 @@ public class XOLogic {
         } else if (boardState[x][y] == 0 && PlayerTurn instanceof OState) {
             boardState[x][y] = 2; // Assuming player 2 is O
         }
+        this.movesAvailable.remove(y*BOARD_WIDTH+x);
         // Check for a winner.
         checkDiagonalTopRight(x, y, PlayerTurn);
         System.out.println(this.gameOver + " " + this.winner);
         checkDiagonalTopLeft(x, y, PlayerTurn);
         System.out.println(this.gameOver + " " + this.winner);
-        checkColumn( PlayerTurn);
+        checkColumn(PlayerTurn);
         System.out.println(this.gameOver + " " + this.winner);
 
-        checkRow( PlayerTurn);
+        checkRow(PlayerTurn);
         System.out.println(this.gameOver + " " + this.winner);
 
         moveCount++;
@@ -56,6 +80,14 @@ public class XOLogic {
         }
         PlayerTurn = (PlayerTurn instanceof XState) ? State.getState('O') : State.getState('X');
         return true;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public CellState getPlayerTurn() {
+        return PlayerTurn;
     }
 
     private void checkDiagonalTopRight(int x, int y, CellState Player) {
@@ -72,15 +104,15 @@ public class XOLogic {
     }
 
     private void checkDiagonalTopLeft(int x, int y, CellState Player) {
-            for (int i = 1; i < BOARD_WIDTH; i++) {
-                if (boardState[i][i] != boardState[i - 1][i - 1] || boardState[BOARD_WIDTH - 1 - i][i] == 0) {
-                    break;
-                }
-                if (i == BOARD_WIDTH - 1) {
-                    winner = Player;
-                    gameOver = true;
-                }
+        for (int i = 1; i < BOARD_WIDTH; i++) {
+            if (boardState[i][i] != boardState[i - 1][i - 1] || boardState[BOARD_WIDTH - 1 - i][i] == 0) {
+                break;
             }
+            if (i == BOARD_WIDTH - 1) {
+                winner = Player;
+                gameOver = true;
+            }
+        }
     }
 
     private void checkRow(CellState Player) {
@@ -111,5 +143,15 @@ public class XOLogic {
             }
         }
 
+    }
+
+    public void initializeBoard() {
+        for (int i = 0; i < BOARD_WIDTH * BOARD_WIDTH; i++) {
+            movesAvailable.add(i);
+        }
+    }
+
+    public static HashSet<Integer> getMovesAvailable() {
+        return movesAvailable;
     }
 }

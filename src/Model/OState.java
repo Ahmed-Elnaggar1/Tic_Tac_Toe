@@ -19,5 +19,15 @@ public class OState implements CellState {
     public void displayState() {
         System.out.println("O STATE");
     }
+
+    @Override
+    public boolean notEquals(CellState state) {
+        return getClass() != state.getClass();
+    }
+
+    @Override
+    public String tostring() {
+        return "O";
+    }
     
 }
