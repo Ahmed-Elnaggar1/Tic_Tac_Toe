@@ -16,6 +16,14 @@ public interface IBoard {
     public static final int BOARD_WIDTH = 3;
     public static final int BOARD_HEIGHT = 3;
 
+    public int getXScore();
+
+    public void setXScore(int XScore);
+
+    public int getOScore();
+
+    public void setOScore(int OScore);
+
     public Move getNextMove();
 
     public IBoard Copy(IBoard board);
@@ -45,4 +53,6 @@ public interface IBoard {
     public HashSet<Integer> getMovesAvailable();
 
     public void setMovesAvailable(HashSet<Integer> movesAvailable);
+    //public void setStatus();
+    public String getStaus();
 }

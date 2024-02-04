@@ -5,8 +5,6 @@
 package View;
 
 import Controller.GameController;
-import Controller.XOControl;
-import Model.AlphaBeta;
 import Model.Board;
 import Model.BoardBuilder;
 import Model.Defensive;

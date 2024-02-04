@@ -20,7 +20,25 @@ public class Board implements IBoard {
     private boolean GameOver;
     private HashSet<Integer> movesAvailable;
     private Move nextMove;
-    private IBoardBuilder builder;
+    private int XScore;
+    private int OScore;
+
+    public int getXScore() {
+        return XScore;
+    }
+
+    public void setXScore(int XScore) {
+        this.XScore = XScore;
+    }
+
+    public int getOScore() {
+        return OScore;
+    }
+
+    public void setOScore(int OScore) {
+        this.OScore = OScore;
+    }
+
     public Move getNextMove() {
         return nextMove;
     }
@@ -28,7 +46,7 @@ public class Board implements IBoard {
     public void setNextMove(Move nextMove) {
         this.nextMove = nextMove;
     }
-    
+
     public Board() {
         BoardStates = new CellState[BOARD_WIDTH][BOARD_HEIGHT];
         this.movesAvailable = new HashSet<>();
@@ -93,8 +111,9 @@ public class Board implements IBoard {
     public void setMovesAvailable(HashSet<Integer> movesAvailable) {
         this.movesAvailable = movesAvailable;
     }
+
     @Override
-    public IBoard Copy (IBoard board) {
+    public IBoard Copy(IBoard board) {
         IBoard boardCopy = new Board();
 
         for (int i = 0; i < board.getBoardStates().length; i++) {
@@ -107,6 +126,11 @@ public class Board implements IBoard {
         boardCopy.setMoveCount(board.getMoveCount());
         boardCopy.setGameOver(board.isGameOver());
         return boardCopy;
+    }
+
+    @Override
+    public String getStaus() {
+        return "X score : " + this.XScore +"      "+ "O score: " + this.OScore;
     }
 
 }

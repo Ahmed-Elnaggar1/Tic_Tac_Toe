@@ -4,10 +4,16 @@
  */
 package View;
 
+import Controller.GameController;
 import Controller.Move;
 import Controller.XOEngine;
 import Model.Algorithms;
+import Model.Board;
+import Model.BoardBuilder;
+import Model.CareTaker;
 import Model.IBoard;
+import Model.OState;
+import Model.XState;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -22,16 +29,21 @@ import javax.swing.JPanel;
  * @author es-ahmedalizakaryah2
  */
 public class GamePanel extends JPanel {
+
     private BufferedImage boardImage; // Image for the board
     private BufferedImage xImage; // Image for X
     private BufferedImage oImage; // Image for O
     private IBoard board;
+    private Algorithms algo;
+    public void setBoard(IBoard board) {
+        this.board = board;
+    }
 
     public IBoard getBoard() {
         return board;
     }
-    public void loadImages()
-    {
+
+    public void loadImages() {
         try {
             File file = new File("src/Utils/background.png");
             File file2 = new File("src/Utils/x.png");
@@ -45,9 +57,10 @@ public class GamePanel extends JPanel {
             System.out.println("ASD ASDASDASD");
         }
     }
-    public GamePanel(IBoard board,Algorithms algo)
-    {
-        this.board =board;
+
+    public GamePanel(IBoard board, Algorithms algo) {
+        this.board = board;
+        this.algo = algo;
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -60,25 +73,60 @@ public class GamePanel extends JPanel {
                 int cellHeight = getHeight() / 3;
                 int row = mouseY / cellHeight;
                 int col = mouseX / cellWidth;
-                Move move = new Move(row,col);
+                Move move = new Move(row, col);
                 board.setNextMove(move);
                 XOEngine engine = XOEngine.getInstance();
-                if(engine.move(board.getNextMove(), board))
-                {
-                    if(algo!= null)
-                    {
+                if (engine.move(board.getNextMove(), board)) {
+                    IBoard BoardCopy = board.Copy(board);
+                    //Memento newHistory = new Memento(newBoard, this.gameStatus, this.whoseTurn, moveNumber, canWhiteCastleKingSide, canWhiteCastleQueenSide, canBlackCastleKingSide, canBlackCastleQueenSide);
+                    CareTaker.save(BoardCopy);
+                    repaint();
+                    if (algo != null) {
                         algo.run(board.getPlayerTurn(), board, Double.POSITIVE_INFINITY);
+                        IBoard BoardCopy2 = board.Copy(board);
+                        CareTaker.save(BoardCopy2);
+                        repaint();
                     }
                 }
-                repaint();
+                if (board.isGameOver() && algo == null) {
+                    if (board.getWinner() instanceof XState) {
+                        board.setXScore(board.getXScore() + 1);
+                        JOptionPane.showMessageDialog(null, "Winner X","Winner",JOptionPane.INFORMATION_MESSAGE);
+                         new BoardBuilder().reset(board);
+                         repaint();
+                        GameController.updateStatus();
+                    } else if (board.getWinner() instanceof OState) {
+                        board.setOScore(board.getOScore()+1);
+                        JOptionPane.showMessageDialog(null, "Winner O","Winner",JOptionPane.INFORMATION_MESSAGE);
+                        new BoardBuilder().reset(board);
+                         repaint();
+                        GameController.updateStatus();
+                    }
+                    else
+                    {
+
+                      JOptionPane.showMessageDialog(null, "Draw","Draw",JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                
             }
         });
     }
-    public GamePanel(IBoard board)
-    {
-        this(board,null);
+
+    public void undo() {
+        XOEngine.getInstance().undo(board);
+        if(algo != null)
+        {
+            XOEngine.getInstance().undo(board);
+        }
+        repaint();
     }
-     @Override
+
+    public GamePanel(IBoard board) {
+        this(board, null);
+    }
+
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Draw the board image
@@ -102,4 +150,3 @@ public class GamePanel extends JPanel {
         }
     }
 }
-

@@ -4,6 +4,8 @@
  */
 package Controller;
 
+import Model.Board;
+import Model.CareTaker;
 import Model.CellState;
 import Model.EmptyState;
 import Model.IBoard;
@@ -70,7 +72,37 @@ public class XOEngine {
     private boolean isValidMove(Move move, IBoard board) {
         return board.getBoardStates()[move.getX()][move.getY()] instanceof EmptyState;
     }
+    
+     public void undo(IBoard board) {
 
+        try {
+            System.out.println("undo");
+            if (CareTaker.getPeak().getMoveCount()>= 2) {
+                CareTaker.restore();
+                board.setBoardStates(CareTaker.getPeak().getBoardStates());
+                board.setGameOver(CareTaker.getPeak().isGameOver()); 
+                board.setMovesAvailable(CareTaker.getPeak().getMovesAvailable());
+                board.setMoveCount(CareTaker.getPeak().getMoveCount());
+                board.setNextMove(CareTaker.getPeak().getNextMove());
+                board.setPlayerTurn(CareTaker.getPeak().getPlayerTurn());
+                board.setWinner(CareTaker.getPeak().getWinner());
+
+            } //else if (moveNumber == 1) 
+            else if (CareTaker.getPeak().getMoveCount()== 1) {
+                board.setBoardStates(CareTaker.getPeak().getBoardStates());
+                board.setGameOver(CareTaker.getPeak().isGameOver()); 
+                board.setMovesAvailable(CareTaker.getPeak().getMovesAvailable());
+                board.setMoveCount(CareTaker.getPeak().getMoveCount());
+                board.setNextMove(CareTaker.getPeak().getNextMove());
+                board.setPlayerTurn(CareTaker.getPeak().getPlayerTurn());
+                board.setWinner(CareTaker.getPeak().getWinner());
+            }
+
+            System.out.println("Board number: " + CareTaker.getPeak().getMoveCount());
+        } catch (Exception e) {
+            System.out.println("Exception in undo");
+        }
+    }
     private void changeTurns(Move move, IBoard board) {
         if (board.getMoveCount() == IBoard.BOARD_WIDTH * IBoard.BOARD_HEIGHT) {
             board.setGameOver(true);

@@ -10,5 +10,5 @@ package Model;
  */
 public interface IBoardBuilder {
     public IBoard initiallizeBoard();
-    public IBoard reset();
+    public void reset(IBoard board);
 }
