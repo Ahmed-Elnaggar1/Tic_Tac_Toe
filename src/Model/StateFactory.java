@@ -19,9 +19,13 @@ public class StateFactory {
         {
             return new OState();
         }
-        else 
+        else if (State == 'E')
         {
             return new EmptyState();
+        }
+        else 
+        {
+            return null;
         }
     }
 }

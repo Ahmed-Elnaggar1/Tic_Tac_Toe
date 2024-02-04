@@ -4,12 +4,22 @@
  */
 package View;
 
+import Controller.GameController;
+import Controller.XOControl;
+import Model.AlphaBeta;
+import Model.Board;
+import Model.BoardBuilder;
+import Model.Defensive;
+import Model.IBoard;
+import Model.MiniMax;
+import Model.RandomStrategy;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -24,25 +34,31 @@ public class ButtonFactory {
         button.setFont(buttonFont);
         button.setPreferredSize(new Dimension(100, 100));
         button.setBackground(Color.PINK);
-        if ("Easy Level".equals(text)) {
+        if ("Random Level".equals(text)) {
             button.addActionListener((ActionEvent e) -> {
-
+                GameController control = new GameController(new GamePanel(new BoardBuilder().initiallizeBoard(),new RandomStrategy()),frame);
+                frame.setVisible(false);
             });
-        } else if ("Medium Level".equals(text)) {
+        } else if ("Defensive Level".equals(text)) {
             button.addActionListener((ActionEvent e) -> {
-
+                GameController control = new GameController(new GamePanel(new BoardBuilder().initiallizeBoard(),new Defensive()),frame);
+                frame.setVisible(false);
             });
-        } else if ("Hard Level".equals(text)) {
+        } else if ("Smart Level".equals(text)) {
             button.addActionListener((ActionEvent e) -> {
-
+                GameController control = new GameController(new GamePanel(new BoardBuilder().initiallizeBoard(),new MiniMax()),frame);
+                frame.setVisible(false);
             });
         } else if ("Single Player".equals(text)) {
             button.addActionListener((ActionEvent e) -> {
-
+                LevelScreen l = new LevelScreen(frame);
+                l.Start();
+                frame.setVisible(false);
             });
         } else if ("MultiPlayer".equals(text)) {
             button.addActionListener((ActionEvent e) -> {
-
+                GameController control = new GameController(new GamePanel(new BoardBuilder().initiallizeBoard()),frame);
+                frame.setVisible(false);
             });
         }
         button.setPreferredSize(new Dimension(150, 50));

@@ -8,9 +8,6 @@ package Model;
  *
  * @author es-ahmedalizakaryah2
  */
-public interface CellState {
-    public void changeState(Cell c);
-    public void displayState();
-    public boolean notEquals(CellState state);
-    public String tostring();
+public interface Algorithms {
+    void run(CellState player, IBoard board, double maxPly );
 }

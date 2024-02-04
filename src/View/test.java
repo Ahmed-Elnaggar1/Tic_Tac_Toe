@@ -37,7 +37,7 @@ public class test {
             frame.setLocationRelativeTo(null); // Center the frame on the screen
             frame.setVisible(true);*/
            PlayerModeScreen m = new PlayerModeScreen();
-           LevelScreen l = new LevelScreen();
+           //LevelScreen l = new LevelScreen();
         });
     }
 }

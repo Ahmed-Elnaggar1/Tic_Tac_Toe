@@ -12,12 +12,22 @@ public class EmptyState implements CellState {
 
     @Override
     public void changeState(Cell c) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
 
     @Override
     public void displayState() {
         System.out.println("Empty STATE");
+    }
+
+    @Override
+    public boolean notEquals(CellState state) {
+        return true;
+    }
+
+    @Override
+    public String tostring() {
+        return "Empty"; 
     }
     
 }

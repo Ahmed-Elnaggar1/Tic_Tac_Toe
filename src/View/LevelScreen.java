@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -19,18 +20,23 @@ import javax.swing.JPanel;
 public class LevelScreen {
 
     private JFrame levelFrame = new JFrame();
+    private JFrame Parent;
     private JPanel backgroundPanel;
     private JButton EasyBtn;
     private JButton MediumBtn;
     private JButton HardBtn;
 
-    public LevelScreen() {
+    public LevelScreen(JFrame parent) {
         // Initializing variables
+        this.Parent = parent; 
+    }
+    public void Start()
+    {
         levelFrame = new JFrame("Levels");
         backgroundPanel = new JPanel();
-        EasyBtn = new JButton("Easy Level");
-        MediumBtn = new JButton("Medium Level");
-        HardBtn = new JButton("Hard Level");
+        EasyBtn = new JButton("Random Level");
+        MediumBtn = new JButton("Defensive Level");
+        HardBtn = new JButton("Smart Level");
 
         levelFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -54,5 +60,15 @@ public class LevelScreen {
         levelFrame.pack();
         levelFrame.setLocationRelativeTo(null); // Center the frame on the screen
         levelFrame.setVisible(true);
+        
+        levelFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        levelFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+               
+                    levelFrame.dispose();
+                    Parent.setVisible(true);
+            }
+        });
     }
 }
